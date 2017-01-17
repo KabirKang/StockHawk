@@ -167,6 +167,4 @@ public final class QuoteSyncJob {
 
         }
     }
-
-
 }
