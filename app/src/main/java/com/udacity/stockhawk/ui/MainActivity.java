@@ -1,9 +1,11 @@
 package com.udacity.stockhawk.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -30,10 +32,11 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
-        SwipeRefreshLayout.OnRefreshListener,
-        StockAdapter.StockAdapterOnClickHandler {
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final int STOCK_LOADER = 0;
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_view)
     RecyclerView stockRecyclerView;
@@ -46,11 +49,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private StockAdapter adapter;
 
     @Override
-    public void onClick(String symbol) {
-        Timber.d("Symbol clicked: %s", symbol);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -59,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         adapter = new StockAdapter(this, new StockAdapter.StockAdapterOnClickHandler() {
             @Override
-            public void onClick(String symbol) {
-                Log.d("BLAH", "BLAH" + symbol);
+            public void onClick(String symbol, StockAdapter.StockViewHolder vh) {
+                selectItem(Contract.Quote.makeUriForStock(symbol));
             }
         });
         stockRecyclerView.setAdapter(adapter);
@@ -88,6 +86,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }).attachToRecyclerView(stockRecyclerView);
 
 
+    }
+
+    private void selectItem(Uri uri) {
+        Intent intent = new Intent(this, DetailActivity.class).setData(uri);
+        Log.d(LOG_TAG, "HEREEEEEE");
+        startActivity(intent);
     }
 
     private boolean networkUp() {
