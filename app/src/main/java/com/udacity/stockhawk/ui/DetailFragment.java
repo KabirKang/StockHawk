@@ -83,12 +83,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             String stockData = data.getString(COL_HISTORY);
             String lines[] = stockData.split("\\r?\\n");
             List<Entry> entries = new ArrayList<Entry>();
-            for (String line : lines) {
+            for (int i = 0; i <lines.length; i++) {
+                String line = lines[i];
                 Log.d(LOG_TAG, "stocks" + line);
                 StockPoint point = new StockPoint(line);
-                entries.add(new Entry(point.getDate(), point.getPrice()));
+                entries.add(new Entry(i, point.getPrice()));
             }
+
             LineDataSet dataSet = new LineDataSet(entries, "Label");
+            dataSet.setColor(R.color.material_red_700);
+            dataSet.setValueTextColor(R.color.material_green_700);
+            dataSet.setLineWidth(5);
             lineData = new LineData(dataSet);
             lineChart.setData(lineData);
             lineChart.invalidate();
