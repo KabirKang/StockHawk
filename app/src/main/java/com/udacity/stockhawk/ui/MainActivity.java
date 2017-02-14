@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private void selectItem(Uri uri) {
         Intent intent = new Intent(this, DetailActivity.class).setData(uri);
-        Log.d(LOG_TAG, "HEREEEEEE");
         startActivity(intent);
     }
 
@@ -171,8 +170,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (PrefUtils.getDisplayMode(this)
                 .equals(getString(R.string.pref_display_mode_absolute_key))) {
             item.setIcon(R.drawable.ic_percentage);
+            item.setTitle(R.string.pref_display_mode_percentage_key);
         } else {
             item.setIcon(R.drawable.ic_dollar);
+            item.setTitle(R.string.pref_display_mode_absolute_key);
         }
     }
 
