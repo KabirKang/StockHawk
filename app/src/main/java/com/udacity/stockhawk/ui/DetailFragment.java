@@ -62,18 +62,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         lineChart = (LineChart) rootView.findViewById(R.id.chart);
-
-//        mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
-//        mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
-//        mDescriptionView = (TextView) rootView.findViewById(R.id.detail_forecast_textview);
-//        mHighTempView = (TextView) rootView.findViewById(R.id.detail_high_textview);
-//        mLowTempView = (TextView) rootView.findViewById(R.id.detail_low_textview);
-//        mHumidityView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
-//        mHumidityLabelView = (TextView) rootView.findViewById(R.id.detail_humidity_label_textview);
-//        mWindView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
-//        mWindLabelView = (TextView) rootView.findViewById(R.id.detail_wind_label_textview);
-//        mPressureView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
-//        mPressureLabelView = (TextView) rootView.findViewById(R.id.detail_pressure_label_textview);
+        
         return rootView;
     }
 
@@ -85,7 +74,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             List<Entry> entries = new ArrayList<Entry>();
             for (int i = 0; i <lines.length; i++) {
                 String line = lines[i];
-                Log.d(LOG_TAG, "stocks" + line);
                 StockPoint point = new StockPoint(line);
                 entries.add(new Entry(i, point.getPrice()));
             }
@@ -106,9 +94,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if ( null != mUri ) {
-            // Now create and return a CursorLoader that will take care of
-            // creating a Cursor for the data being displayed.
-
             String[] projection = new String[DETAIL_COLUMNS.size()];
             projection = DETAIL_COLUMNS.toArray(projection);
             return new CursorLoader(
@@ -127,12 +112,5 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
-    }
-
-    private void setUpLineChart() {
-//        StockPoint[] stockPoints
-//        LineDataSet dataSet = new LineDataSet(entries, "Label");
-//        LineData lineData = new LineData(dataSet);
-//        chart.setData(lineData);
     }
 }
