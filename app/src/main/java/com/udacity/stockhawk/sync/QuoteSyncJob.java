@@ -81,8 +81,9 @@ public final class QuoteSyncJob {
 
 
                 Stock stock = quotes.get(symbol);
-                StockQuote quote = stock.getQuote();
-                if (quote.getPrice() == null || quote.getChange() == null || quote.getChangeInPercent() == null) {
+
+                StockQuote quote = (stock != null) ? stock.getQuote() : null;
+                if (quote == null || quote.getPrice() == null || quote.getChange() == null || quote.getChangeInPercent() == null) {
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
 
                         @Override
@@ -90,6 +91,7 @@ public final class QuoteSyncJob {
                             Toast.makeText(context, R.string.invalid_symbol, Toast.LENGTH_SHORT).show();
                         }
                     });
+                    PrefUtils.removeStock(context, symbol);
                     continue;
                 }
                 float price = quote.getPrice().floatValue();
@@ -132,6 +134,11 @@ public final class QuoteSyncJob {
         } catch (IOException exception) {
             Timber.e(exception, "Error fetching stock quotes");
         }
+    }
+
+    public static void updateWidget(Context context) {
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+        context.sendBroadcast(dataUpdatedIntent);
     }
 
     private static void schedulePeriodic(Context context) {

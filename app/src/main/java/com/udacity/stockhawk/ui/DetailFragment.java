@@ -1,6 +1,7 @@
 package com.udacity.stockhawk.ui;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -83,6 +84,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             dataSet.setValueTextColor(R.color.material_green_700);
             dataSet.setLineWidth(5);
             lineData = new LineData(dataSet);
+            lineChart.getXAxis().setTextColor(Color.WHITE);
             lineChart.setData(lineData);
             lineChart.invalidate();
         }
